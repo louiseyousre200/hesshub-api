@@ -41,7 +41,7 @@ impl TryFrom<HashMap<String, serde_json::Value>> for InsertUserData {
             "name",
             FieldLength {
                 min: None,
-                max: Some(255),
+                max: Some(100),
             },
             &mut errors,
             false,
@@ -52,7 +52,7 @@ impl TryFrom<HashMap<String, serde_json::Value>> for InsertUserData {
             "email",
             FieldLength {
                 min: None,
-                max: Some(255),
+                max: Some(100),
             },
             &mut errors,
             false,
@@ -74,7 +74,7 @@ impl TryFrom<HashMap<String, serde_json::Value>> for InsertUserData {
             "username",
             FieldLength {
                 min: None,
-                max: Some(50),
+                max: Some(100),
             },
             &mut errors,
             false,
@@ -85,7 +85,7 @@ impl TryFrom<HashMap<String, serde_json::Value>> for InsertUserData {
             "password",
             FieldLength {
                 min: None,
-                max: Some(50),
+                max: Some(100),
             },
             &mut errors,
             false,

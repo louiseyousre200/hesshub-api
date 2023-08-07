@@ -17,11 +17,11 @@ CREATE TABLE "users"
     user_profile_image_id UUID DEFAULT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
-    activated BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    activated BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-    verified BOOLEAN DEFAULT FALSE,
+    verified BOOLEAN NOT NULL DEFAULT FALSE,
     verified_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     verified_by UUID DEFAULT NULL
 );
@@ -42,8 +42,8 @@ CREATE TABLE "user_confirmation_tokens"
 (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    used BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     expire_at TIMESTAMP WITH TIME ZONE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
@@ -52,8 +52,8 @@ CREATE TABLE "password_reset_tokens"
 (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    used BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     expire_at TIMESTAMP WITH TIME ZONE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
@@ -63,8 +63,8 @@ CREATE TABLE "user_profile_images"
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
     image_url VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
@@ -88,8 +88,8 @@ CREATE TABLE "hesses"
     who_can_watch_replies WHO_CAN[] DEFAULT NULL,
     who_can_watch_likes WHO_CAN[] DEFAULT NULL,
 
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
@@ -110,7 +110,7 @@ CREATE TABLE "hess_mentions" (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     hess_id UUID NOT NULL,
     user_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     FOREIGN KEY (hess_id) REFERENCES hesses(id) ON DELETE RESTRICT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
@@ -122,7 +122,7 @@ CREATE TABLE "hess_media"
     hess_id UUID NOT NULL,
     media_type MEDIA_TYPE NOT NULL,
     media_url VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
 
@@ -131,7 +131,7 @@ CREATE TABLE "likes"
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     hess_id UUID NOT NULL,
     user_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     FOREIGN KEY (hess_id) REFERENCES hesses(id) ON DELETE RESTRICT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
@@ -141,7 +141,7 @@ CREATE TABLE "user_privacy_preferences" (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL UNIQUE,
 
-    is_private_profile BOOLEAN DEFAULT FALSE,
+    is_private_profile BOOLEAN NOT NULL DEFAULT FALSE,
 
     -- If null means pubic, if empty array means no one (except who's mentioned)
     who_can_reply WHO_CAN[] DEFAULT NULL,
@@ -154,8 +154,8 @@ CREATE TABLE "user_privacy_preferences" (
     who_can_watch_follows WHO_CAN[] DEFAULT NULL,
     who_can_watch_likes WHO_CAN[] DEFAULT NULL,
 
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
@@ -181,9 +181,9 @@ CREATE TABLE "followers"
     watch_new_hesses BOOLEAN NOT NULL,
     watch_replies BOOLEAN NOT NULL,
     watch_follows BOOLEAN NOT NULL,
-    watch_likes BOOLEAN DEFAULT FALSE,
+    watch_likes BOOLEAN NOT NULL DEFAULT FALSE,
 
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE RESTRICT,
     FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE RESTRICT
@@ -196,15 +196,15 @@ CREATE TABLE "follow_requests"
     requester_id UUID NOT NULL,
     requested_id UUID NOT NULL,
 
-    watch_new_hesses BOOLEAN DEFAULT TRUE,
-    watch_replies BOOLEAN DEFAULT TRUE,
-    watch_follows BOOLEAN DEFAULT TRUE,
-    watch_likes BOOLEAN DEFAULT FALSE,
+    watch_new_hesses BOOLEAN NOT NULL DEFAULT TRUE,
+    watch_replies BOOLEAN NOT NULL DEFAULT TRUE,
+    watch_follows BOOLEAN NOT NULL DEFAULT TRUE,
+    watch_likes BOOLEAN NOT NULL DEFAULT FALSE,
 
     status FOLLOW_REQUEST_STATUS NOT NULL DEFAULT 'PENDING',
 
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
 
     FOREIGN KEY (requested_id) REFERENCES users(id) ON DELETE RESTRICT,
@@ -226,7 +226,7 @@ CREATE TABLE "blocked_users"
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     blocker UUID NOT NULL,
     blocked UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     FOREIGN KEY (blocker) REFERENCES users(id) ON DELETE RESTRICT,
     FOREIGN KEY (blocked) REFERENCES users(id) ON DELETE RESTRICT

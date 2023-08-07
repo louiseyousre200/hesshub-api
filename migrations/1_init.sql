@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TYPE USER_ROLE AS ENUM ('USER', 'MANAGER', 'ROOT');
 CREATE TYPE GENDER AS ENUM ('MALE', 'FEMALE');
 CREATE TYPE MEDIA_TYPE AS ENUM ('AUDIO', 'VIDEO', 'PHOTO');
@@ -6,7 +8,7 @@ CREATE TYPE FOLLOW_REQUEST_STATUS AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 
 CREATE TABLE "users"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     gender GENDER NOT NULL,
     role USER_ROLE NOT NULL,
@@ -38,7 +40,7 @@ ALTER TABLE "users" ADD FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE
 
 CREATE TABLE "user_confirmation_tokens"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
     used BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -48,7 +50,7 @@ CREATE TABLE "user_confirmation_tokens"
 
 CREATE TABLE "password_reset_tokens"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
     used BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -58,7 +60,7 @@ CREATE TABLE "password_reset_tokens"
 
 CREATE TABLE "user_profile_images"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
     image_url VARCHAR(255) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -71,7 +73,7 @@ ALTER TABLE "users" ADD FOREIGN KEY (user_profile_image_id) REFERENCES user_prof
 
 CREATE TABLE "hesses"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
     content TEXT DEFAULT NULL,
     parent_hess_id UUID DEFAULT NULL,
@@ -105,7 +107,7 @@ CREATE TRIGGER trigger_update_hesses_updated_at BEFORE
 UPDATE ON hesses FOR EACH ROW EXECUTE FUNCTION update_hesses_updated_at();
 
 CREATE TABLE "hess_mentions" (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     hess_id UUID NOT NULL,
     user_id UUID NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -116,7 +118,7 @@ CREATE TABLE "hess_mentions" (
 
 CREATE TABLE "hess_media"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     hess_id UUID NOT NULL,
     media_type MEDIA_TYPE NOT NULL,
     media_url VARCHAR(255) NOT NULL,
@@ -126,7 +128,7 @@ CREATE TABLE "hess_media"
 
 CREATE TABLE "likes"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     hess_id UUID NOT NULL,
     user_id UUID NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -136,7 +138,7 @@ CREATE TABLE "likes"
 );
 
 CREATE TABLE "user_privacy_preferences" (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL UNIQUE,
 
     is_private_profile BOOLEAN DEFAULT FALSE,
@@ -171,7 +173,7 @@ UPDATE ON user_privacy_preferences FOR EACH ROW EXECUTE FUNCTION update_user_pri
 
 CREATE TABLE "followers"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
 
     follower_id UUID NOT NULL,
     followed_id UUID NOT NULL,
@@ -189,7 +191,7 @@ CREATE TABLE "followers"
 
 CREATE TABLE "follow_requests"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
 
     requester_id UUID NOT NULL,
     requested_id UUID NOT NULL,
@@ -221,7 +223,7 @@ UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_follow_requests_updated_at(
 
 CREATE TABLE "blocked_users"
 (
-    id UUID DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     blocker UUID NOT NULL,
     blocked UUID NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

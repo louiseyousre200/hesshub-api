@@ -3,7 +3,7 @@ use sqlx::Type;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Type)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-#[sqlx(type_name = "GENDER")]
+#[sqlx(type_name = "GENDER", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Gender {
     Male,
     Female,

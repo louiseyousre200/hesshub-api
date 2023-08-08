@@ -10,6 +10,7 @@ use super::validator::{FieldLength, FieldType};
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ApiResource {
     Users,
+    PasswordResetToken,
 }
 
 #[derive(Debug, Serialize)]
@@ -52,6 +53,7 @@ pub enum ApiErrorType {
     NotLoggedIn,
     InvalidJwtToken,
     InvalidCredentials,
+    PasswordResetTokenExpired,
 
     // Unidentifiable
     InternalServerError,
@@ -93,7 +95,8 @@ impl ApiErrorType {
     pub fn status_code(&self) -> StatusCode {
         match self {
             ApiErrorType::Unauthorized => StatusCode::FORBIDDEN,
-            ApiErrorType::InvalidCredentials
+            ApiErrorType::PasswordResetTokenExpired
+            | ApiErrorType::InvalidCredentials
             | ApiErrorType::NotLoggedIn
             | ApiErrorType::InvalidJwtToken => StatusCode::UNAUTHORIZED,
             ApiErrorType::RouteNotFound | ApiErrorType::ResourceNotFound(_) => {
@@ -116,7 +119,8 @@ impl ApiErrorType {
 
     pub fn details(&self) -> Option<serde_json::Value> {
         match self {
-            ApiErrorType::NoImage
+            ApiErrorType::PasswordResetTokenExpired
+            | ApiErrorType::NoImage
             | ApiErrorType::UnnamedMultipartFile
             | ApiErrorType::EmptyFile
             | ApiErrorType::NotAnImage
@@ -169,6 +173,7 @@ impl ApiErrorType {
             ApiErrorType::NotAnImage => "NOT_AN_IMAGE",
             ApiErrorType::EmptyFile => "EMPTY_FILE",
             ApiErrorType::NoImage => "NO_IMAGE",
+            ApiErrorType::PasswordResetTokenExpired => "PASSWORD_RESET_TOKEN_EXPIRED",
         }
     }
 }

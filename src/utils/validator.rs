@@ -4,14 +4,37 @@ use std::collections::HashMap;
 
 use super::response::ValidationError;
 
+/// Represents the possible data types for a JSON field's value.
+///
+/// This enum defines the various data types that a JSON field's value can belong to.
+///
+/// # Variants
+///
+/// - `Array`: Represents an array data type.
+/// - `Bool`: Represents a boolean data type.
+/// - `Null`: Represents a null data type.
+/// - `Number`: Represents a number data type.
+/// - `Object`: Represents an object data type.
+/// - `String`: Represents a string data type.
 #[derive(Debug, Serialize, PartialEq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FieldType {
+    /// Represents an array data type.
     Array,
+
+    /// Represents a boolean data type.
     Bool,
+
+    /// Represents a null data type.
     Null,
+
+    /// Represents a number data type.
     Number,
+
+    /// Represents an object data type.
     Object,
+
+    /// Represents a string data type.
     String,
 }
 

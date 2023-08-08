@@ -243,6 +243,45 @@ where
     }
 }
 
+/// Validates a JSON field that is expected to contain a boolean value.
+///
+/// This function validates a specific field in a JSON-like data structure. It checks whether
+/// the field is a boolean value and performs additional validations based on the provided parameters.
+/// It supports scenarios where the field is optional or required.
+///
+/// # Parameters
+///
+/// - `value`: A reference to an `Option` containing a reference to a `serde_json::Value`.
+///   This represents the value of the field that needs to be validated.
+///
+/// - `name`: A string slice (`&str`) representing the name of the field being validated.
+///
+/// - `errors`: A mutable reference to a vector (`&mut Vec<ValidationError>`) that will
+///   store any validation errors encountered during the validation process.
+///
+/// - `optional`: A boolean indicating whether the field is optional (if `true`) or
+///   required (if `false`).
+///
+/// # Returns
+///
+/// This function returns a nested `Option<bool>` to represent different outcomes:
+///
+/// - `Some(value)`: If the validation is successful and the field contains a valid boolean value,
+///   it returns `Some` wrapping the validated boolean.
+///
+/// - `None`: If the validation encounters an error or the field is missing. If the field
+///   is optional, it may return `None` to indicate that the field is not present without
+///   indicating an error.
+///
+/// # Errors
+///
+/// If validation fails, the function appends one of the following `ValidationError` variants
+/// to the `errors` vector:
+///
+/// - `RequiredFieldMissing`: If a required field is missing.
+///
+/// - `InvalidFieldDataType`: If the field does not contain a boolean value.
+///
 pub fn validate_boolean_field(
     value: &Option<&serde_json::Value>,
     name: &str,

@@ -18,7 +18,5 @@ pub struct UserPrivacyPreferences {
     pub who_can_watch_replies: Option<Vec<WhoCan>>,
     pub who_can_watch_follows: Option<Vec<WhoCan>>,
     pub who_can_watch_likes: Option<Vec<WhoCan>>,
-    pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
-    pub deleted_at: Option<DateTime<Utc>>,
 }

@@ -154,9 +154,11 @@ CREATE TABLE "user_privacy_preferences" (
     who_can_watch_follows WHO_CAN[] DEFAULT NULL,
     who_can_watch_likes WHO_CAN[] DEFAULT NULL,
 
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    -- its `created_at` is the same as user's `created_at`
+    -- created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+    -- its `deleted_at` is the same as user's `deleted_at`
+    -- deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
@@ -170,6 +172,22 @@ $$ LANGUAGE plpgsql;
 -- Create a trigger to call the update_jobs_updated_at function on every jobs update
 CREATE TRIGGER trigger_update_user_privacy_preferences_updated_at BEFORE
 UPDATE ON user_privacy_preferences FOR EACH ROW EXECUTE FUNCTION update_user_privacy_preferences_updated_at();
+
+-- Create a trigger function to insert default privacy preferences for new users
+CREATE OR REPLACE FUNCTION insert_default_privacy_preferences()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO user_privacy_preferences (user_id) VALUES (NEW.id);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a trigger to call the insert_default_privacy_preferences function on every user insert
+CREATE TRIGGER after_insert_users
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION insert_default_privacy_preferences();
+
 
 CREATE TABLE "followers"
 (

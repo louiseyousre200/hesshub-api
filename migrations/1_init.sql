@@ -26,13 +26,13 @@ CREATE TABLE "users"
     verified_by UUID DEFAULT NULL
 );
 
--- Create a trigger function to update jobs updated_at on every update
+-- Create a trigger function to update users updated_at on every update
 CREATE OR REPLACE FUNCTION update_users_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW();
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create a trigger to call the update_jobs_updated_at function on every jobs update
+-- Create a trigger to call the update_users_updated_at function on every users update
 CREATE TRIGGER trigger_update_users_updated_at BEFORE
 UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_users_updated_at();
 
@@ -96,13 +96,13 @@ CREATE TABLE "hesses"
     FOREIGN KEY (parent_hess_id) REFERENCES hesses(id) ON DELETE RESTRICT
 );
 
--- Create a trigger function to update jobs updated_at on every update
+-- Create a trigger function to update hesses updated_at on every update
 CREATE OR REPLACE FUNCTION update_hesses_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW();
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create a trigger to call the update_jobs_updated_at function on every jobs update
+-- Create a trigger to call the update_hesses_updated_at function on every hesses update
 CREATE TRIGGER trigger_update_hesses_updated_at BEFORE
 UPDATE ON hesses FOR EACH ROW EXECUTE FUNCTION update_hesses_updated_at();
 
@@ -163,13 +163,13 @@ CREATE TABLE "user_privacy_preferences" (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
--- Create a trigger function to update jobs updated_at on every update
+-- Create a trigger function to update user privacy preferences updated_at on every update
 CREATE OR REPLACE FUNCTION update_user_privacy_preferences_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW();
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create a trigger to call the update_jobs_updated_at function on every jobs update
+-- Create a trigger to call the update_user_privacy_preferences_updated_at function on every user privacy preferences update
 CREATE TRIGGER trigger_update_user_privacy_preferences_updated_at BEFORE
 UPDATE ON user_privacy_preferences FOR EACH ROW EXECUTE FUNCTION update_user_privacy_preferences_updated_at();
 
@@ -208,6 +208,17 @@ CREATE TABLE "followers"
     FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
+-- Create a trigger function to update followers updated_at on every update
+CREATE OR REPLACE FUNCTION update_followers_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW();
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a trigger to call the update_followers_updated_at function on every follower update
+CREATE TRIGGER trigger_update_followers_updated_at BEFORE
+UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_followers_updated_at();
+
+
 CREATE TABLE "follow_requests"
 (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -230,13 +241,13 @@ CREATE TABLE "follow_requests"
     FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
--- Create a trigger function to update jobs updated_at on every update
+-- Create a trigger function to update follow request updated_at on every update
 CREATE OR REPLACE FUNCTION update_follow_requests_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW();
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create a trigger to call the update_jobs_updated_at function on every jobs update
+-- Create a trigger to call the update_follow_requests_updated_at function on every follow_requests update
 CREATE TRIGGER trigger_update_follow_requests_updated_at BEFORE
 UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_follow_requests_updated_at();
 

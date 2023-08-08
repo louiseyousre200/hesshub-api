@@ -7,5 +7,4 @@ use sqlx::Type;
 pub enum WhoCan {
     Followed,
     Followers,
-    Root,
 }

@@ -13,5 +13,6 @@ pub struct Follower {
     pub watch_follows: bool,
     pub watch_likes: bool,
     pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
     pub deleted_at: Option<DateTime<Utc>>,
 }

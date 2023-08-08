@@ -134,6 +134,80 @@ pub fn validate_boolean_field(
     }
 }
 
+/// Validates a JSON field that is expected to contain an array.
+///
+/// This function validates a specific field in a JSON-like data structure. It checks
+/// whether the field is an array and performs additional validations based on the
+/// provided parameters. It supports scenarios where the field is optional or nullable.
+///
+/// # Parameters
+///
+/// - `value`: A reference to an `Option` containing a reference to a `serde_json::Value`.
+///   This represents the value of the field that needs to be validated.
+///
+/// - `name`: A string slice (`&str`) representing the name of the field being validated.
+///
+/// - `errors`: A mutable reference to a vector (`&mut Vec<ValidationError>`) that will
+///   store any validation errors encountered during the validation process.
+///
+/// - `optional`: A boolean indicating whether the field is optional (if `true`) or
+///   required (if `false`).
+///
+/// - `nullable`: A boolean indicating whether the field can be `null` (if `true`) or
+///   not (if `false`).
+///
+/// # Returns
+///
+/// This function returns a nested `Option<Vec<serde_json::Value>>` to represent different
+/// outcomes:
+///
+/// - `Some(Some(...))`: If the validation is successful and the field contains an array,
+///   it returns `Some` wrapping `Some` with a cloned vector of `serde_json::Value` elements.
+///
+/// - `Some(None)`: If the validation is successful but the field is `null` (and `nullable` is `true`),
+///   it returns `Some` wrapping `None`.
+///
+/// - `None`: If the validation encounters an error or the field is missing. If the field is optional,
+///   it may return `None` to indicate that the field is not present without indicating an error.
+///
+pub fn validate_array_field(
+    value: &Option<&serde_json::Value>,
+    name: &str,
+    errors: &mut Vec<ValidationError>,
+    optional: bool,
+    nullable: bool,
+) -> Option<Option<Vec<serde_json::Value>>> {
+    match value {
+        Some(serde_json::Value::Array(value)) => Some(Some(value.to_owned())),
+        Some(serde_json::Value::Null) => {
+            if nullable {
+                Some(None)
+            } else {
+                errors.push(ValidationError::InvalidFieldDataType {
+                    field_name: name.to_string(),
+                    expected_type: FieldType::Array,
+                });
+                None
+            }
+        }
+        None => {
+            if !optional {
+                errors.push(ValidationError::RequiredFieldMissing {
+                    field_name: name.to_string(),
+                });
+            }
+            None
+        }
+        _ => {
+            errors.push(ValidationError::InvalidFieldDataType {
+                field_name: name.to_string(),
+                expected_type: FieldType::Bool,
+            });
+            None
+        }
+    }
+}
+
 pub fn validate_string_field(
     value: &Option<&serde_json::Value>,
     name: &str,

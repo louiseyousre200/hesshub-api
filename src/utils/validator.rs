@@ -131,6 +131,53 @@ pub fn validate_email_field(
     email_value
 }
 
+/// Validates a JSON field that is expected to contain a telephone number.
+///
+/// This function validates a specific field in a JSON-like data structure. It checks whether
+/// the field is a string representing a valid telephone number and performs additional validations
+/// based on the provided parameters. It supports scenarios where the field is optional or required,
+/// enforces length constraints, and verifies the telephone number format using a regular expression.
+///
+/// # Parameters
+///
+/// - `value`: A reference to an `Option` containing a reference to a `serde_json::Value`.
+///   This represents the value of the field that needs to be validated.
+///
+/// - `name`: A string slice (`&str`) representing the name of the field being validated.
+///
+/// - `field_length`: A `FieldLength` struct defining the minimum and/or maximum lengths
+///   for the telephone number string field's value.
+///
+/// - `errors`: A mutable reference to a vector (`&mut Vec<ValidationError>`) that will
+///   store any validation errors encountered during the validation process.
+///
+/// - `optional`: A boolean indicating whether the field is optional (if `true`) or
+///   required (if `false`).
+///
+/// # Returns
+///
+/// This function returns a nested `Option<String>` to represent different outcomes:
+///
+/// - `Some(value)`: If the validation is successful and the field contains a valid telephone number
+///   within the specified length constraints and format, it returns `Some` wrapping the validated telephone number.
+///
+/// - `None`: If the validation encounters an error or the field is missing. If the field
+///   is optional, it may return `None` to indicate that the field is not present without
+///   indicating an error.
+///
+/// # Errors
+///
+/// If validation fails, the function appends one of the following `ValidationError` variants
+/// to the `errors` vector:
+///
+/// - `InvalidFieldContentLength`: If the telephone number string's length is outside the specified range.
+///
+/// - `RequiredFieldMissing`: If a required field is missing.
+///
+/// - `InvalidFieldDataType`: If the field does not contain a string value.
+///
+/// - `InvalidTelephoneFormat`: If the telephone number string does not match the expected format.
+///
 pub fn validate_telephone_number_field(
     value: &Option<&serde_json::Value>,
     name: &str,

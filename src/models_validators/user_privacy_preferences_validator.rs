@@ -9,14 +9,56 @@ use crate::{
 
 use super::enums::who_can_validator::validate_who_can_enum_array_field;
 
+/// A struct representing user privacy preference updates.
 #[derive(Debug, Serialize)]
 pub struct UpdateUserPrivacyPreferencesData {
+    /// Specifies who can reply to the user's content.
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_reply: Option<Option<Vec<WhoCan>>>,
+
+    /// Specifies who can like the user's content.
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_like: Option<Option<Vec<WhoCan>>>,
+
+    /// Specifies who can mention the user in their content.
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_mention_me: Option<Option<Vec<WhoCan>>>,
+
+    /// Specifies who can watch new hesses (or posts).
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_watch_new_hesses: Option<Option<Vec<WhoCan>>>,
+
+    /// Specifies who can watch replies to the user's content.
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_watch_replies: Option<Option<Vec<WhoCan>>>,
+
+    /// Specifies who can watch when other users follow the user.
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_watch_follows: Option<Option<Vec<WhoCan>>>,
+
+    /// Specifies who can watch when other users like the user's content.
+    ///
+    /// - `None` if the preference is not specified at all.
+    /// - `Some(None)` if the preference is present but set to null.
+    /// - `Some(Some(...))` if the preference holds actual value(s).
     pub who_can_watch_likes: Option<Option<Vec<WhoCan>>>,
 }
 

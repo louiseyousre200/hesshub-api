@@ -11,6 +11,7 @@ use super::validator::{FieldLength, FieldType};
 pub enum ApiResource {
     Users,
     PasswordResetToken,
+    UserConfirmationToken,
 }
 
 #[derive(Debug, Serialize)]
@@ -54,6 +55,7 @@ pub enum ApiErrorType {
     InvalidJwtToken,
     InvalidCredentials,
     PasswordResetTokenExpired,
+    UserConfirmationTokenExpired,
 
     // Unidentifiable
     InternalServerError,
@@ -95,7 +97,8 @@ impl ApiErrorType {
     pub fn status_code(&self) -> StatusCode {
         match self {
             ApiErrorType::Unauthorized => StatusCode::FORBIDDEN,
-            ApiErrorType::PasswordResetTokenExpired
+            ApiErrorType::UserConfirmationTokenExpired
+            | ApiErrorType::PasswordResetTokenExpired
             | ApiErrorType::InvalidCredentials
             | ApiErrorType::NotLoggedIn
             | ApiErrorType::InvalidJwtToken => StatusCode::UNAUTHORIZED,
@@ -119,7 +122,8 @@ impl ApiErrorType {
 
     pub fn details(&self) -> Option<serde_json::Value> {
         match self {
-            ApiErrorType::PasswordResetTokenExpired
+            ApiErrorType::UserConfirmationTokenExpired
+            | ApiErrorType::PasswordResetTokenExpired
             | ApiErrorType::NoImage
             | ApiErrorType::UnnamedMultipartFile
             | ApiErrorType::EmptyFile
@@ -174,6 +178,7 @@ impl ApiErrorType {
             ApiErrorType::EmptyFile => "EMPTY_FILE",
             ApiErrorType::NoImage => "NO_IMAGE",
             ApiErrorType::PasswordResetTokenExpired => "PASSWORD_RESET_TOKEN_EXPIRED",
+            ApiErrorType::UserConfirmationTokenExpired => "USER_CONFIRMATION_TOKEN_EXPIRED",
         }
     }
 }

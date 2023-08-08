@@ -30,8 +30,25 @@ use crate::{
 ///
 /// # Returns
 ///
-/// - If the validation succeeds, returns an `Option<WhoCan>` with the corresponding enum value.
-/// - If the validation fails and the field is not optional, returns `None`.
+/// This function returns an `Option<WhoCan>` representing different outcomes:
+///
+/// - `Some(value)`: If the validation is successful and the field contains a valid enum value,
+///   it returns `Some` wrapping the corresponding `WhoCan` enum variant.
+///
+/// - `None`: If the validation encounters an error or the field is missing. If the field
+///   is optional, it may return `None` to indicate that the field is not present without
+///   indicating an error.
+///
+/// # Errors
+///
+/// If validation fails and the field is not optional, the function appends a
+/// `ValidationError` variant to the `errors` vector.
+///
+/// - `RequiredFieldMissing`: If a required field is missing.
+///
+/// - `InvalidFieldDataType`: If the field does not contain a string value.
+///
+/// - `IncorrectEnumValue`: If the field's string value does not match any of the expected enum values.
 ///
 pub fn validate_who_can_enum_field(
     value: &Option<&serde_json::Value>,

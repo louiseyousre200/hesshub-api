@@ -8,6 +8,40 @@ use crate::{
     utils::response::{ApiErrorType, ApiResource},
 };
 
+pub async fn get_user_by_id(pool: Pool<Postgres>, id: Uuid) -> Result<User, ApiErrorType> {
+    let query_result = sqlx::query_as!(
+        User,
+        r#"SELECT
+            id,
+            name,
+            gender AS "gender: Gender",
+            role AS "role: UserRole",
+            bio,
+            user_profile_image_id,
+            email,
+            username,
+            password,
+            activated,
+            created_at,
+            updated_at,
+            deleted_at,
+            verified,
+            verified_at,
+            verified_by
+        FROM users WHERE id = $1
+        "#,
+        id
+    )
+    .fetch_optional(&pool)
+    .await;
+
+    match query_result {
+        Ok(Some(user)) => Ok(user),
+        Ok(None) => Err(ApiErrorType::ResourceNotFound(ApiResource::Users)),
+        Err(_) => Err(ApiErrorType::InternalServerError),
+    }
+}
+
 pub async fn insert_user(
     pool: Pool<Postgres>,
     insert_user_data: InsertUserData,

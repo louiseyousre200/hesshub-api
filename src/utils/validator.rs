@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use super::response::ValidationError;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, PartialEq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FieldType {
     Array,

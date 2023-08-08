@@ -15,9 +15,27 @@ pub enum FieldType {
     String,
 }
 
+/// Represents length constraints for a field's value.
+///
+/// This struct defines the minimum and/or maximum lengths that a field's value is allowed to have.
+///
+/// # Fields
+///
+/// - `min`: An optional `usize` specifying the minimum allowed length for the field's value.
+///   If `Some`, the field's value must have a length greater than or equal to `min`.
+///
+/// - `max`: An optional `usize` specifying the maximum allowed length for the field's value.
+///   If `Some`, the field's value must have a length less than or equal to `max`.
 #[derive(Debug, Serialize)]
 pub struct FieldLength {
+    /// An optional `usize` specifying the minimum allowed length for the field's value.
+    ///
+    /// If `Some`, the field's value must have a length greater than or equal to `min`.
     pub min: Option<usize>,
+
+    /// An optional `usize` specifying the maximum allowed length for the field's value.
+    ///
+    /// If `Some`, the field's value must have a length less than or equal to `max`.
     pub max: Option<usize>,
 }
 

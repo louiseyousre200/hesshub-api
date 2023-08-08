@@ -201,6 +201,51 @@ pub fn validate_telephone_number_field(
     telephone_number
 }
 
+/// Validates a JSON field that is expected to contain an enum value represented as a string.
+///
+/// This function validates a specific field in a JSON-like data structure. It checks whether
+/// the field is a string representing one of the expected enum values and performs additional
+/// validations based on the provided parameters. It supports scenarios where the field is optional
+/// or required.
+///
+/// # Parameters
+///
+/// - `value`: A reference to an `Option` containing a reference to a `serde_json::Value`.
+///   This represents the value of the field that needs to be validated.
+///
+/// - `name`: A string slice (`&str`) representing the name of the field being validated.
+///
+/// - `expected_values`: A reference to a `HashMap` containing the expected enum values and their
+///   corresponding string representations.
+///
+/// - `errors`: A mutable reference to a vector (`&mut Vec<ValidationError>`) that will
+///   store any validation errors encountered during the validation process.
+///
+/// - `optional`: A boolean indicating whether the field is optional (if `true`) or
+///   required (if `false`).
+///
+/// # Returns
+///
+/// This function returns a nested `Option<E>` to represent different outcomes:
+///
+/// - `Some(value)`: If the validation is successful and the field contains a valid enum value,
+///   it returns `Some` wrapping the validated enum value.
+///
+/// - `None`: If the validation encounters an error or the field is missing. If the field
+///   is optional, it may return `None` to indicate that the field is not present without
+///   indicating an error.
+///
+/// # Errors
+///
+/// If validation fails, the function appends one of the following `ValidationError` variants
+/// to the `errors` vector:
+///
+/// - `RequiredFieldMissing`: If a required field is missing.
+///
+/// - `InvalidFieldDataType`: If the field does not contain a string value.
+///
+/// - `IncorrectEnumValue`: If the field's string value does not match any of the expected enum values.
+///
 pub fn validate_enum_field<E>(
     value: &Option<&serde_json::Value>,
     name: &str,

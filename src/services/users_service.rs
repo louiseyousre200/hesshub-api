@@ -8,6 +8,19 @@ use crate::{
     utils::response::{ApiErrorType, ApiResource},
 };
 
+/// Retrieves a user by their ID from the database.
+///
+/// # Arguments
+///
+/// * `pool` - A database connection pool.
+/// * `id` - The UUID of the user to retrieve.
+///
+/// # Returns
+///
+/// Returns a `Result` containing the retrieved `User` if successful.
+/// If no user is found, returns an `ApiErrorType::ResourceNotFound` error.
+/// If any other error occurs during the database query, returns an `ApiErrorType::InternalServerError` error.
+///s
 pub async fn get_user_by_id(pool: Pool<Postgres>, id: Uuid) -> Result<User, ApiErrorType> {
     let query_result = sqlx::query_as!(
         User,
@@ -42,6 +55,21 @@ pub async fn get_user_by_id(pool: Pool<Postgres>, id: Uuid) -> Result<User, ApiE
     }
 }
 
+/// Inserts a new user into the database.
+///
+/// # Arguments
+///
+/// * `pool` - A database connection pool.
+/// * `insert_user_data` - Data to insert for the new user.
+/// * `user_profile_image_id` - Optional UUID of the user's profile image.
+/// * `verified_by` - Optional UUID of the user who verified this user.
+///
+/// # Returns
+///
+/// Returns a `Result` containing the inserted `User` if successful.
+/// If the user (email, username) already exists, returns an `ApiErrorType::AlreadyExists` error.
+/// If any other error occurs during database insertion, returns an `ApiErrorType::InternalServerError` error.
+///
 pub async fn insert_user(
     pool: Pool<Postgres>,
     insert_user_data: InsertUserData,
@@ -115,6 +143,19 @@ pub async fn insert_user(
     }
 }
 
+/// (Softly) Deletes a user from the database.
+///
+/// # Arguments
+///
+/// * `pool` - A database connection pool.
+/// * `id` - The UUID of the user to delete.
+///
+/// # Returns
+///
+/// Returns `Result<(), ApiErrorType>` indicating success or an `ApiErrorType::InternalServerError` error
+/// if any error occurs during database deletion.
+/// If no user with the provided ID and isn't deleted is found for deletion, returns an `ApiErrorType::ResourceNotFound` error.
+///
 pub async fn delete_user(pool: Pool<Postgres>, id: Uuid) -> Result<(), ApiErrorType> {
     let current_date = Utc::now();
 
@@ -138,6 +179,20 @@ pub async fn delete_user(pool: Pool<Postgres>, id: Uuid) -> Result<(), ApiErrorT
     }
 }
 
+/// Updates a user's information in the database.
+///
+/// # Arguments
+///
+/// * `pool` - A database connection pool.
+/// * `user_id` - The ID of the user to update.
+/// * `update_user_data` - Data containing the fields to update.
+///
+/// # Returns
+///
+/// Returns `Result<(), ApiErrorType>` indicating success or an `ApiErrorType::InternalServerError` error
+/// if any error occurs during database update.
+/// If no user with the provided ID and isn't deleted is found for updating, returns an `ApiErrorType::ResourceNotFound` error.
+///
 pub async fn update_user(
     pool: Pool<Postgres>,
     user_id: i32,

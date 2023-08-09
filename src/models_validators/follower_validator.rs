@@ -7,11 +7,22 @@ use crate::utils::{
     validator::validate_boolean_field,
 };
 
+/// Represents the data used for updating or inserting follower preferences.
+///
+/// When inserting a new follower preference, if a field is set to `None`, it will default to the system default.
+/// During updates, setting a field to `None` indicates that the corresponding preference will not be updated.
 #[derive(Debug, Serialize)]
 pub struct UpdateOrInsertFollowerData {
+    /// Determines whether the follower should receive notifications for new hesses.
     pub watch_new_hesses: Option<bool>,
+
+    /// Determines whether the follower should receive notifications for replies.
     pub watch_replies: Option<bool>,
+
+    /// Determines whether the follower should receive notifications for new follows.
     pub watch_follows: Option<bool>,
+
+    /// Determines whether the follower should receive notifications for likes.
     pub watch_likes: Option<bool>,
 }
 

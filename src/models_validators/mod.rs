@@ -1,6 +1,5 @@
 pub mod blocked_user_validator;
 pub mod enums;
-pub mod follow_request_validator;
 pub mod follower_validator;
 pub mod hess_like_validator;
 pub mod hess_media_validator;

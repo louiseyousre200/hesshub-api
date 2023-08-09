@@ -101,7 +101,7 @@ Welcome to the Hesses Social Platform API documentation! This API allows you to 
 To use this API, follow these steps:
 
 1. Clone this repository to your local machine.
-2. Configure the database and `DATABASE_URL`, `JWT_SECRET`, and `JWT_EXPIRE_IN_HOURS` environment variables.
+2. Configure `DATABASE_URL`, `JWT_SECRET`, and `JWT_EXPIRE_IN_HOURS` environment variables.
 3. Run the application.
 4. Access the API endpoints using the provided routes and methods.
 

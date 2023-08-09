@@ -13,6 +13,7 @@ pub enum ApiResource {
     PasswordResetToken,
     UserConfirmationToken,
     Followers,
+    BlockerUsers,
 }
 
 #[derive(Debug, Serialize)]

@@ -8,14 +8,14 @@ use crate::utils::{
 };
 
 #[derive(Debug, Serialize)]
-pub struct InsertFollowerData {
+pub struct UpdateOrInsertFollowerData {
     pub watch_new_hesses: Option<bool>,
     pub watch_replies: Option<bool>,
     pub watch_follows: Option<bool>,
     pub watch_likes: Option<bool>,
 }
 
-impl TryFrom<HashMap<String, serde_json::Value>> for InsertFollowerData {
+impl TryFrom<HashMap<String, serde_json::Value>> for UpdateOrInsertFollowerData {
     type Error = ApiErrorType;
 
     fn try_from(value: HashMap<String, serde_json::Value>) -> Result<Self, Self::Error> {
@@ -46,7 +46,7 @@ impl TryFrom<HashMap<String, serde_json::Value>> for InsertFollowerData {
         );
 
         if errors.is_empty() {
-            Ok(InsertFollowerData {
+            Ok(UpdateOrInsertFollowerData {
                 watch_follows,
                 watch_likes,
                 watch_new_hesses,

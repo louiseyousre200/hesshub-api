@@ -1,3 +1,4 @@
+pub mod jwt;
 pub mod rejection_handler;
 pub mod response;
 pub mod validator;

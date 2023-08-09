@@ -254,10 +254,10 @@ UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_follow_requests_updated_at(
 CREATE TABLE "blocked_users"
 (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    blocker UUID NOT NULL,
-    blocked UUID NOT NULL,
+    blocker_id UUID NOT NULL,
+    blocked_id UUID NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-    FOREIGN KEY (blocker) REFERENCES users(id) ON DELETE RESTRICT,
-    FOREIGN KEY (blocked) REFERENCES users(id) ON DELETE RESTRICT
+    FOREIGN KEY (blocker_id) REFERENCES users(id) ON DELETE RESTRICT,
+    FOREIGN KEY (blocked_id) REFERENCES users(id) ON DELETE RESTRICT
 );

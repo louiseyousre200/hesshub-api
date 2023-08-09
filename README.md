@@ -49,8 +49,8 @@ Welcome to the Hesses Social Platform API documentation! This API allows you to 
 
 ## Following 👂
 
-- **POST** `/api/users/:id/follow`: Follow a user.
-- **PUT** `/api/users/:id/follow`: Update following preferences a user.
+- **POST** `/api/users/:id/follow`: Request to follow a user.
+- **PUT** `/api/users/:id/follow`: Update following preferences for a followed user.
 - **DELETE** `/api/users/:id/follow`: Unfollow a user.
 
 ## Blocking 🚫
@@ -60,7 +60,6 @@ Welcome to the Hesses Social Platform API documentation! This API allows you to 
 
 ## Follow Requests 🤝
 
-- **POST** `/api/follow-requests`: Send a follow request.
 - **DELETE** `/api/follow-requests/:id`: Cancel a sent follow request.
 - **PUT** `/api/follow-requests/:id/approve`: Approve a follow request.
 - **PUT** `/api/follow-requests/:id/reject`: Reject a follow request.
@@ -102,7 +101,7 @@ Welcome to the Hesses Social Platform API documentation! This API allows you to 
 To use this API, follow these steps:
 
 1. Clone this repository to your local machine.
-2. Configure the database connection and `DATABASE_URL`, `JWT_SECRET`, and `JWT_EXPIRE_IN_HOURS` environment variables.
+2. Configure the database and `DATABASE_URL`, `JWT_SECRET`, and `JWT_EXPIRE_IN_HOURS` environment variables.
 3. Run the application.
 4. Access the API endpoints using the provided routes and methods.
 

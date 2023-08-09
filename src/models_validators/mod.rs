@@ -1,12 +1,6 @@
 pub mod blocked_user_validator;
 pub mod enums;
 pub mod follower_validator;
-pub mod hess_like_validator;
-pub mod hess_media_validator;
-pub mod hess_mention_validator;
 pub mod hess_validator;
-pub mod user_confirmation_token_validator;
 pub mod user_privacy_preferences_validator;
-pub mod user_profile_image_validator;
-pub mod user_reset_token_validator;
 pub mod user_validator;

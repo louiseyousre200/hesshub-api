@@ -6,8 +6,8 @@ use uuid::Uuid;
 #[serde(rename_all = "camelCase")]
 pub struct BlockedUser {
     pub id: Uuid,
-    pub blocker: Uuid,
-    pub blocked: Uuid,
+    pub blocker_id: Uuid,
+    pub blocked_id: Uuid,
     pub created_at: DateTime<Utc>,
     pub deleted_at: Option<DateTime<Utc>>,
 }

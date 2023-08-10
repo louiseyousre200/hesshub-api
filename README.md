@@ -101,7 +101,33 @@ Welcome to the Hesses Social Platform API documentation! This API allows you to 
 To use this API, follow these steps:
 
 1. Clone this repository to your local machine.
-2. Configure `DATABASE_URL`, `JWT_SECRET`, and `JWT_EXPIRE_IN_HOURS` environment variables.
+2. Configure the following environment variables.
+
+   ```conf
+   # Database Connection
+   DATABASE_URL=<your_database_url>
+
+   # JWT Configurations
+   JWT_SECRET=<your_jwt_secret>
+   JWT_EXPIRE_IN_HOURS=<jwt_expire_time_in_hours>
+
+   # Account Activation Configurations
+   ACCOUNT_ACTIVATION_LINK_PREFIX=<account_activation_link_prefix>
+   ACCOUNT_ACTIVATION_TOKEN_EXPIRE_IN_HOURS=<activation_token_expire_time_in_hours>
+
+   # Password Reset Configurations
+   PASSWORD_RESET_LINK_PREFIX=<password_reset_link_prefix>
+   PASSWORD_RESET_TOKEN_EXPIRE_IN_HOURS=<password_reset_token_expire_time_in_hours>
+
+   # Details Included in Emails (you could include only a subset of these)
+   FACEBOOK_LINK=<facebook_link>
+   TWITTER_LINK=<twitter_link>
+   LINKED_IN_LINK=<linkedin_link>
+   INSTAGRAM_LINK=<instagram_link>
+   FIRST_CONTACT_LINE=<first_contact_line>
+   SECOND_CONTACT_LINE=<second_contact_line>
+   ```
+
 3. Run the application.
 4. Access the API endpoints using the provided routes and methods.
 

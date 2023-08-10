@@ -1,4 +1,5 @@
 pub mod blocked_users_service;
+pub mod emails_service;
 pub mod follow_requests_service;
 pub mod followers_service;
 pub mod hess_likes_services;

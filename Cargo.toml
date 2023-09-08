@@ -23,7 +23,7 @@ sqlx = { version = "0.7.1", features = [
     "chrono",
     "uuid",
 ] }
-chrono = { version = "0.4.28", features = ["serde"] }
+chrono = { version = "0.4.30", features = ["serde"] }
 uuid = { version = "1.4.1", features = ["serde", "v4"] }
 argon2 = "0.5.1"
 jsonwebtoken = "8.3.0"

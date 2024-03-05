@@ -30,5 +30,5 @@ jsonwebtoken = "8.3.0"
 rand_core = "0.6.4"
 regex = "1.10.2"
 dotenv = "0.15.0"
-lettre = { version = "0.10.4", features = ["tokio1", "tokio1-native-tls"] }
+lettre = { version = "0.11.4", features = ["tokio1", "tokio1-native-tls"] }
 handlebars = "5.1.1"
